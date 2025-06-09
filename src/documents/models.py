@@ -1,8 +1,13 @@
 from django.db import models
+from django.db import modelsfrom django.conf import settings
 
 # Create your models here.
+
+User = settings.AUTH_USER_MODEL  # Use the custom user model if defined
 class Document(models.Model):
-    owner = User # Owner can be a username or email
+    owner = models.ForeignKey(
+        User
+    )
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     content = models.TextField(blank=True)  # Optional field for additional content
@@ -18,6 +23,3 @@ class Document(models.Model):
         ordering = ['-uploaded_at']  # Order by most recent first
         verbose_name = 'Document'
         verbose_name_plural = 'Documents'  # Plural name for admin interface
-
-from django.contrib.auth.models import User
-# Ensure User model is imported after Document class to avoid circular import issues
